@@ -12,7 +12,7 @@ namespace Crystal
         void Awake ()
         {
             if (!Application.isEditor)
-                Destroy (this);
+                Destroy (gameObject);
 
             Sims = (SafeArea.SimDevice[])Enum.GetValues (typeof (SafeArea.SimDevice));
         }

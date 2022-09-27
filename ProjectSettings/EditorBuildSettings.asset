@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/3.Scenes/CPELoadFirst.unity
+    guid: 3f3c69be588828d44a9efa306e752bc6
+  - enabled: 1
+    path: Assets/3.Scenes/CPELogin.unity
+    guid: 6af4314dd55f23d41b1d801b37560936
+  - enabled: 1
     path: Assets/_Project_/Scenes/CombatPD_LoadFirst.unity
     guid: f0c4b9e7f171dc64d85528b0bf776bd7
   - enabled: 1
