@@ -118,7 +118,7 @@ public class CPELoginControl
     {
         SceneManager.UnloadSceneAsync(CPEConstant.SCENE_LOGIN);
 
-        SceneManager.LoadSceneAsync("CombatPD_LoadFirst", LoadSceneMode.Additive);
+        SceneManager.LoadSceneAsync("CombatPD_MainMenu", LoadSceneMode.Additive);
     }
 
     public void GetPrescriptionToday()
