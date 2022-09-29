@@ -1,0 +1,11 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class MainMenuView : MonoBehaviour
+{
+    void OnApplicationQuit()
+    {
+        CPELoginControl.Api.CloseSession(CPEModel.Api.SessionID);
+    }
+}

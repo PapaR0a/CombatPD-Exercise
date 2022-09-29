@@ -9,9 +9,11 @@ using UnityEngine.Video;
 public class VideoPlayerView : MonoBehaviour 
 {
     private VideoPlayer videoPlayer = null;
-    private float duration;
-    private DateTime startTime;
+    private float clipWatchtime;
+    private float totalWatchtime;
+    private DateTime timeStamp;
     private string clipName = "";
+    private double clipLenght;
 
     private void Start()
     {
@@ -23,49 +25,45 @@ public class VideoPlayerView : MonoBehaviour
     {
         if (videoPlayer.isPlaying)
         {
-            duration += Time.deltaTime;
+            totalWatchtime += Time.deltaTime;
+            clipWatchtime += Time.deltaTime;
         }
     }
 
     private void OnStarted(VideoPlayer vp)
     {
-        if (duration > 0) // Submit previous video data
+        if (clipWatchtime > 0) // Submit previous video data
         {
-            DataDTO prevData = new DataDTO(
-                activityName: "New Video Played. Saving Previous Data",
-                time: DateTime.Now,
-                duration: duration,
-                videoClipName: clipName,
-                lenght: vp.clip.length
-            );
-            CPELoginControl.Api.SubmitSessionData((JObject)JToken.FromObject(prevData));
+            ProcessDataThenSubmit("New Video Played. Saving Previous Data");
         }
 
-        duration = 0;
-        startTime = DateTime.Now;
+        clipWatchtime = 0;
+        timeStamp = DateTime.Now;
         clipName = vp.clip.name;
-        DataDTO newData = new DataDTO(
-                activityName: "Video Started Playing",
+        clipLenght = vp.clip.length;
+
+        ProcessDataThenSubmit("Video clip started playing.");
+    }
+
+    private void ProcessDataThenSubmit(string logTitle)
+    {
+        DataDTO dataLog = new DataDTO(
+                activityName: logTitle,
                 time: DateTime.Now,
-                duration: duration,
+                totalWatchTime: totalWatchtime,
+                clipWatchTime: clipWatchtime,
                 videoClipName: clipName,
-                lenght: vp.clip.length
+                lenght: clipLenght
             );
 
-        CPELoginControl.Api.SubmitSessionData((JObject)JToken.FromObject(newData));
+        CPELoginControl.Api.SubmitSessionData((JObject)JToken.FromObject(dataLog));
     }
 
     private void OnDestroy()
     {
-        if (duration > 0) // Submit last video data
+        if (clipWatchtime > 0) // Submit last video data
         {
-            DataDTO prevData = new DataDTO(
-                activityName: "Video Player Closed",
-                time: DateTime.Now,
-                duration: duration,
-                videoClipName: clipName
-            );
-            CPELoginControl.Api.SubmitSessionData((JObject)JToken.FromObject(prevData));
+            ProcessDataThenSubmit("Video player page closed");
         }
     }
 }

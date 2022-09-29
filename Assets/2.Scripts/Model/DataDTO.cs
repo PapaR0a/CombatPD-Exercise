@@ -7,26 +7,29 @@ public class DataDTO
 {
     public string ActivityName;
     public DateTime Timestamp;
-    public string PlayedDuration; // In Seconds
+    public int TotalPlaylistWatchTime; // In Seconds
+    public int ClipWatchTime; // In Seconds
     public string VideoClipName;
-    public string VideoLenght;
+    public int VideoLenght;
 
     public DataDTO()
     {
         
     }
 
-    public DataDTO(string activityName, DateTime time, float duration = 0, string videoClipName = "", double lenght = 0)
+    public DataDTO(string activityName, DateTime time, float totalWatchTime = 0, float clipWatchTime = 0, string videoClipName = "", double lenght = 0)
     {
         Debug.Log($"<color=yellow>Data created for submission of event: {activityName}</color>");
 
-        duration = (float)(Math.Truncate(duration * 100.0) / 100.0);
+        totalWatchTime = (float)(Math.Truncate(totalWatchTime * 100.0) / 100.0);
+        clipWatchTime = (float)(Math.Truncate(clipWatchTime * 100.0) / 100.0);
         lenght = (Math.Truncate(lenght * 100.0) / 100.0);
 
         ActivityName = activityName;
+        TotalPlaylistWatchTime = (int)totalWatchTime;
         Timestamp = time;
-        PlayedDuration = duration <= 0 ? "--" : $"{(int)duration} seconds";
+        ClipWatchTime = (int)clipWatchTime;
         VideoClipName = videoClipName;
-        VideoLenght = $"{(int)lenght} seconds";
+        VideoLenght = (int)lenght;
     }
 }
