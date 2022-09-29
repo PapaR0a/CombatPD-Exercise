@@ -33,4 +33,14 @@ public class CPELoginView : MonoBehaviour
     {
         m_BtnLogin.onClick.RemoveAllListeners();
     }
+
+#if UNITY_EDITOR
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CPELoginControl.Api.Login("tester", "Aa123123!@#456");
+        }
+    }
+#endif
 }

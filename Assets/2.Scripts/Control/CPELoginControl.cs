@@ -31,8 +31,8 @@ public class CPELoginControl
             if (gssResult.Success)
             {
                 Debug.Log("Start session successful");
-                //TODO: get sessionID and cache in view
-                // gssResult.Data.ID
+
+                CPEModel.Api.SessionID = gssResult.Data.ID; //Cache sessionID
             }
             else
             {
@@ -42,12 +42,12 @@ public class CPELoginControl
         }, gameConfig: gameConfig, prescriptionConfID: prescriptionConfID));
     }
 
-
-    private void SubmitSessionData(long sessionID, JObject data, bool isCloseSession = false)
+    public void SubmitSessionData(JObject data, bool isCloseSession = false)
     {
+        long sessionID = CPEModel.Api.SessionID;
 
+        Utils.DebugLog("SubmitSessionData with data: " + data.ToString());
         Utils.DebugLog("SubmitSessionData: "+ isCloseSession);
-        Utils.DebugLog("SubmitSessionData with data: "+ data.ToString());
 
         CoroutineHelper.Call(CPEAPIService.Api.PushGameSessionDataAsync(sessionID, JsonConvert.SerializeObject(data), (ssDataResult) =>
         {
@@ -85,6 +85,9 @@ public class CPELoginControl
                     {
                         CPEModel.Api.GameID = pgResult.Data.Game.ID;
                         CPEModel.Api.AppID = pgResult.Data.Game.AppId;
+                        CPEModel.Api.GameUserID = pgResult.Data.GameUser.ID;
+
+                        StartSession(null);
 
                         InitializeCombatPDExercise();
                     }
@@ -105,7 +108,7 @@ public class CPELoginControl
         {
             if (result.Success)
             {
-
+                CloseSession(CPEModel.Api.SessionID);
             }
             else
             {
@@ -120,17 +123,4 @@ public class CPELoginControl
 
         SceneManager.LoadSceneAsync("CombatPD_LoadFirst", LoadSceneMode.Additive);
     }
-
-    public void GetPrescriptionToday()
-    {
-        CoroutineHelper.Call(CPEAPIService.Api.GetPrescriptionTodayAsync((relationships) =>
-        {
-            if (relationships.Success)
-            {
-                var sample = relationships.Data[0];
-                //TODO: ...
-            }
-        }));
-    }
-   
 }
