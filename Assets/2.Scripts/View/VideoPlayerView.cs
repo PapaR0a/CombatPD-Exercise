@@ -13,7 +13,7 @@ public class VideoPlayerView : MonoBehaviour
     private float totalWatchtime;
     private DateTime timeStamp;
     private string clipName = "";
-    private double clipLenght;
+    private double clipLength;
 
     private void Start()
     {
@@ -40,7 +40,7 @@ public class VideoPlayerView : MonoBehaviour
         clipWatchtime = 0;
         timeStamp = DateTime.Now;
         clipName = vp.clip.name;
-        clipLenght = vp.clip.length;
+        clipLength = vp.clip.length;
 
         ProcessDataThenSubmit("Video clip started playing.");
     }
@@ -53,7 +53,7 @@ public class VideoPlayerView : MonoBehaviour
                 totalWatchTime: totalWatchtime,
                 clipWatchTime: clipWatchtime,
                 videoClipName: clipName,
-                lenght: clipLenght
+                length: clipLength
             );
 
         CPELoginControl.Api.SubmitSessionData((JObject)JToken.FromObject(dataLog));
